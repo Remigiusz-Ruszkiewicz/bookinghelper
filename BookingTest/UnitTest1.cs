@@ -30,7 +30,7 @@ namespace Tests
                 _existingBooking
             };
 
-            _repository.Setup(r => r.GetActiveBookings(2)).Returns(list.AsQueryable());
+            _repository.Setup(r => r.GetActiveBookings(It.IsAny<int>())).Returns(list.AsQueryable());
            
         }
         
@@ -38,33 +38,33 @@ namespace Tests
 
 
         [Test]
-        public void test1()
+        public void ArrBeforeDepBefore()
         {
             var NewBooking = new Booking
             {
                 Id = 2,
-                ArrivalDate = ArriveOn(2017, 1, 05),
-                DepartureDate = DepartOn(2017, 1, 10),
+                ArrivalDate = Before(_existingBooking.ArrivalDate,-10),
+                DepartureDate = Before(_existingBooking.ArrivalDate,-5),
                 Reference = "a"
             };
             var result = BookingHelper.OverlappingBookingsExist(NewBooking, _repository.Object);
             Assert.AreEqual(string.Empty, result);
                 }
         [Test]
-        public void test2()
+        public void ArrBeforeDepIn()
         {
             var NewBooking = new Booking
             {
                 Id = 2,
-                ArrivalDate = ArriveOn(2017, 1, 10),
-                DepartureDate = DepartOn(2017, 1, 16),
+                ArrivalDate = Before(_existingBooking.ArrivalDate, -10),
+                DepartureDate = After(_existingBooking.DepartureDate, -2),
                 Reference = "a"
             };
             var result = BookingHelper.OverlappingBookingsExist(NewBooking, _repository.Object);
-            Assert.AreEqual("a", result);
+            Assert.AreEqual(_existingBooking.Reference, result);
         }
         [Test]
-        public void test3()
+        public void ArrInDepIn()
         {
             var NewBooking = new Booking
             {
@@ -74,10 +74,10 @@ namespace Tests
                 Reference = "a"
             };
             var result = BookingHelper.OverlappingBookingsExist(NewBooking, _repository.Object);
-            Assert.AreEqual("a", result);
+            Assert.AreEqual(_existingBooking.Reference, result);
         }
         [Test]
-        public void test4()
+        public void ArrInDepAfter()
         {
             var NewBooking = new Booking
             {
@@ -87,10 +87,10 @@ namespace Tests
                 Reference = "a"
             };
             var result = BookingHelper.OverlappingBookingsExist(NewBooking, _repository.Object);
-            Assert.AreEqual("a", result);
+            Assert.AreEqual(_existingBooking.Reference, result);
         }
         [Test]
-        public void test5()
+        public void ArrBeforeDepAfter()
         {
             var NewBooking = new Booking
             {
@@ -100,10 +100,10 @@ namespace Tests
                 Reference = "a"
             };
             var result = BookingHelper.OverlappingBookingsExist(NewBooking, _repository.Object);
-            Assert.AreEqual("a", result);
+            Assert.AreEqual(_existingBooking.Reference, result);
         }
         [Test]
-        public void test6()
+        public void ArrAfterDepAfter()
         {
             var NewBooking = new Booking
             {
