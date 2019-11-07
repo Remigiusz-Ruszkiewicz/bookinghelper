@@ -18,7 +18,7 @@ namespace bookinghelper
                 bookings.FirstOrDefault(
                     b =>
                         booking.ArrivalDate < b.ArrivalDate
-                        &&booking.DepartureDate>b.DepartureDate
+                        &&booking.DepartureDate > b.DepartureDate
                         ||booking.ArrivalDate >= b.ArrivalDate
                         && booking.ArrivalDate < b.DepartureDate
                         || booking.DepartureDate > b.ArrivalDate

@@ -69,8 +69,8 @@ namespace Tests
             var NewBooking = new Booking
             {
                 Id = 2,
-                ArrivalDate = ArriveOn(2017, 1,16),
-                DepartureDate = DepartOn(2017, 1, 19),
+                ArrivalDate = After(_existingBooking.DepartureDate, -3),
+                DepartureDate = After(_existingBooking.DepartureDate, -2),
                 Reference = "a"
             };
             var result = BookingHelper.OverlappingBookingsExist(NewBooking, _repository.Object);
@@ -82,8 +82,8 @@ namespace Tests
             var NewBooking = new Booking
             {
                 Id = 2,
-                ArrivalDate = ArriveOn(2017, 1, 19),
-                DepartureDate = DepartOn(2017, 1, 21),
+                ArrivalDate = After(_existingBooking.ArrivalDate, 2),
+                DepartureDate = After(_existingBooking.DepartureDate, 2),
                 Reference = "a"
             };
             var result = BookingHelper.OverlappingBookingsExist(NewBooking, _repository.Object);
@@ -95,8 +95,8 @@ namespace Tests
             var NewBooking = new Booking
             {
                 Id = 2,
-                ArrivalDate = ArriveOn(2017, 1, 10),
-                DepartureDate = DepartOn(2017, 1, 22),
+                ArrivalDate = Before(_existingBooking.ArrivalDate, -2),
+                DepartureDate = After(_existingBooking.DepartureDate, 2),
                 Reference = "a"
             };
             var result = BookingHelper.OverlappingBookingsExist(NewBooking, _repository.Object);
@@ -108,8 +108,8 @@ namespace Tests
             var NewBooking = new Booking
             {
                 Id = 2,
-                ArrivalDate = ArriveOn(2017, 1, 21),
-                DepartureDate = DepartOn(2017, 1, 26),
+                ArrivalDate = After(_existingBooking.DepartureDate, 2),
+                DepartureDate = After(_existingBooking.DepartureDate, 6),
                 Reference = "a"
             };
             var result = BookingHelper.OverlappingBookingsExist(NewBooking, _repository.Object);
